@@ -7,7 +7,7 @@ describe.skip('Login aplicacao',  () =>{
 
        cy.visit('http://automationpractice.com/index.php') //acessa o site
 
-       cy.screenshot() 
+       cy.screenshot('home') 
 
        cy.get('.login').click() //class - clica no botão Sign in
 
@@ -46,11 +46,11 @@ describe.skip('Login aplicacao',  () =>{
        cy.get('#alias').clear() //id - limpa o campo antes de preencher
        cy.get('#alias').type('minha casa') //id - preenche o alias
 
-       cy.screenshot()
+       cy.screenshot('formulario preenchido')
 
        cy.get('#submitAccount').click() //id - clica no botão Sign in
 
-       cy.screenshot()
+       cy.screenshot('usuario criado')
 
 
         })
@@ -74,7 +74,7 @@ describe('Login aplicacao',  () =>{
         cy.get('#SubmitLogin').click() //id - clica no botão Login
         cy.get('ol > li').should('have.text', 'Password is required.') //verificando o erro
 
-        //cy.screenshot('login_invalido sem senha')
+        cy.screenshot('login_invalido sem senha')
         
     })
 
@@ -89,7 +89,7 @@ describe('Login aplicacao',  () =>{
         cy.get('#SubmitLogin').click() //id - clica no botão Login
         cy.get('ol > li').should('have.text', 'Authentication failed.') //verificando o erro
 
-        //cy.screenshot('login_invalido - usuario inexistente')
+        cy.screenshot('login_invalido - usuario inexistente')
         
     })
 
@@ -103,7 +103,7 @@ describe('Login aplicacao',  () =>{
         
         cy.get('.account').should('have.text', 'Nichollas Barros') //validando o login correto
         
-        //cy.screenshot('login_valido')
+        cy.screenshot('login_valido')
 
         cy.get('.logo').click()
     })
@@ -126,7 +126,7 @@ describe('Login aplicacao',  () =>{
 
         cy.get('#add_to_cart > .exclusive').click() //adicionando ao carrinho
 
-        //cy.screenshot('produto_no_carrinho')
+        cy.screenshot('produto_no_carrinho')
         
         cy.get('.cart_navigation > .button > span').click() //clicando em Proceed to checkout
 
