@@ -7,9 +7,11 @@ describe.skip('Login aplicacao',  () =>{
 
        cy.visit('http://automationpractice.com/index.php') //acessa o site
 
+       cy.screenshot() 
+
        cy.get('.login').click() //class - clica no botão Sign in
 
-       cy.get('#email_create').type('nichollas.barros@gmail.com') //id - preenche o email
+       cy.get('#email_create').type('nichollas.barros3@gmail.com') //id - preenche o email
 
        cy.get('#SubmitCreate').click() //id - clica no botão Create an Account
  
@@ -44,64 +46,116 @@ describe.skip('Login aplicacao',  () =>{
        cy.get('#alias').clear() //id - limpa o campo antes de preencher
        cy.get('#alias').type('minha casa') //id - preenche o alias
 
+       cy.screenshot()
+
        cy.get('#submitAccount').click() //id - clica no botão Sign in
+
+       cy.screenshot()
+
+
         })
 })
 
-describe.skip('Login aplicacao',  () =>{
+describe('Login aplicacao',  () =>{
 
     before(()  => {  //executa antes do primeiro teste
         cy.visit('http://automationpractice.com/index.php')     
         cy.get('.login').click() //class - clica no botão Sign in 
-        //cy.get('.logout').click() //class - clica no botão Logoff 
+        
     })
 
-    it.skip('Login incorreto - sem senha', () =>{
+    it('Login incorreto - sem senha', () =>{
+        
+        cy.get('#email').clear() //limpando o campo
         cy.get('#email').type('teste@teste.com') //id - preenche o campo email
-        cy.get('#passwd').clear //id -deixa o campo senha em branco
+        
+        cy.get('#passwd').clear() //id -deixa o campo senha em branco
+
         cy.get('#SubmitLogin').click() //id - clica no botão Login
+        cy.get('ol > li').should('have.text', 'Password is required.') //verificando o erro
+
+        //cy.screenshot('login_invalido sem senha')
+        
+    })
+
+    it('Login incorreto - usuario inexistente', () =>{
+        
+        cy.get('#email').clear() //limpando o campo
+        cy.get('#email').type('teste@teste.com') //id - preenche o campo email
+        
+        cy.get('#passwd').clear() //limpando o campo
+        cy.get('#passwd').type('abcd1234')
+
+        cy.get('#SubmitLogin').click() //id - clica no botão Login
+        cy.get('ol > li').should('have.text', 'Authentication failed.') //verificando o erro
+
+        //cy.screenshot('login_invalido - usuario inexistente')
         
     })
 
     it('Login sucesso', () =>{
+        cy.get('#email').clear() //limpando o campo
         cy.get('#email').type('nichollas.barros@gmail.com') //id - preenche o campo email
+
+        cy.get('#passwd').clear() //limpando o campo
         cy.get('#passwd').type('abc123') //id -deixa o campo senha em branco
         cy.get('#SubmitLogin').click() //id - clica no botão Login
         
         cy.get('.account').should('have.text', 'Nichollas Barros') //validando o login correto
-    })
-    
-    
-})
-
-
-describe('Selecionando produtos',  () =>{
-    
-    before(()  => {  //executa antes do primeiro teste
-        cy.visit('http://automationpractice.com/index.php')     
         
+        //cy.screenshot('login_valido')
+
+        cy.get('.logo').click()
     })
+    
 
     it('Selecionando 1o produto', () =>{
 
-        /*cy.get('form#searchbox').within(($form) => { //form de busca de produto
-            cy.get('input[name=search_query]').type("Printed Chiffon Dress") //pesquisando
-            cy.root().submit() //clica no botao buscar
-        })*/
-    
-        cy.get('a.product-name')
-        .contains("Blouse")
-        .click()
 
-/*
+        cy.get('#search_query_top').type("Printed Chiffon Dress")
+        cy.get('#searchbox > .btn').click()
+
+        cy.get('.first-in-line > .product-container > .right-block > h5 > .product-name').click()
+
+           
         cy.get('#group_1')
         .select('M')
         .should('have.value', '2') //id - selecionando o tamanho M
-  */      
+       
+        cy.get('#color_15').click() //id - escolhendo a cor verde
 
-        //cy.get('#add_to_cart').click() //id - clica no botão add to cart
+        cy.get('#add_to_cart > .exclusive').click() //adicionando ao carrinho
+
+        //cy.screenshot('produto_no_carrinho')
+        
+        cy.get('.cart_navigation > .button > span').click() //clicando em Proceed to checkout
 
 
 
     })
+
+    it('Carrinho de compra', () =>{
+
+        
+        
+        cy.get('#ordermsg > .form-control').type('Compras de Natal') //preenchendo o campo comentarios
+
+        cy.get('.cart_navigation > .button > span').click()//clicando em Proceed to checkout
+
+        cy.get('#cgv').click().should('to.be.checked')  //confirmando os termos de serviço
+
+    })
+
+    it('Pagamento', () =>{
+
+        cy.get('.bankwire').click //selecionando o tipo de pagamento
+
+        cy.get('#cart_navigation > .button > span').click() //confirmando o pedido
+
+        cy.get('.cheque-indent > .dark').should('have.text', 'Your order on My Store is complete.')
+
+        cy.screenshot('compra_completa')
+
+    })
+    
 })
