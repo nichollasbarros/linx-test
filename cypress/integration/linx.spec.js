@@ -3,7 +3,7 @@
 
 describe.skip('Login aplicacao',  () =>{
 
-    it('Criacão de novo usuario', () =>{
+    it('Criacão de novo usuario ', () =>{
 
        cy.visit('http://automationpractice.com/index.php') //acessa o site
 
