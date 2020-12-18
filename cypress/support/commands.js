@@ -24,34 +24,3 @@
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite("visit", (originalFn, url, options) => { ... })
 
-
-Cypress.Commands.add('getToken', (user, passwd) =>{
-
-    cy.request({
-        method: 'POST',
-        url: "https://sso.sbx.edenred.io/connect/token",
-        headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-        },
-        body: {
-            client_id: '4e7a68c990a54bc18cf98fbaaf4160ed',
-            grant_type: 'password',
-            username: user,
-            password: passwd,
-            acr_values: 'tenant:br-fleet-mobility'
-        }
-    }).its('body.access_token').should('not.be.empty')
-        .then(token =>{
-          return token
-      })
-})
-
-Cypress.Commands.add('setOrganization', (token, cdOrganization) =>{
-
-    cy.request({
-        method: 'PUT',
-        url: "https://homolog.projetos.embratec.local/administrative/rest/userOrganization/currentUserOrganization",
-        headers         : { Authorization: `Bearer ${token}` },
-        body            : { "codigoOrganizacao": cdOrganization}
-    })
-})
